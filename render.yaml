@@ -1,13 +1,11 @@
-# render.yaml
+# render.yaml - n8n con Supabase (sin Docker)
 services:
   - type: web
     name: n8n-supabase
-    env: docker
     plan: free
     region: oregon
-    branch: main  # Especifica la rama
-    docker:
-      dockerfile: Dockerfile
+    buildCommand: npm install -g n8n
+    startCommand: n8n start
     envVars:
       # ========== DATABASE CONFIGURATION (SUPABASE) ==========
       - key: DB_TYPE
@@ -19,48 +17,44 @@ services:
       - key: DB_POSTGRESDB_USER
         value: postgres.cqdcwamhyfwibqcozjqh
       - key: DB_POSTGRESDB_PASSWORD
-        sync: false  # 🔴 CONFIGURAR MANUALMENTE
+        sync: false  # 🔴 Configurar manualmente
       - key: DB_POSTGRESDB_DATABASE
         value: postgres
-      - key: DB_POSTGRESDB_SCHEMA
-        value: public
-        
-      # ========== SSL & CONNECTION ==========
+      
+      # ========== SSL CONFIGURATION ==========
       - key: DB_POSTGRESDB_SSL
         value: "true"
       - key: DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED
         value: "false"
       - key: DB_POSTGRESDB_CONNECTION_TIMEOUT
         value: "60000"
-      - key: DB_POSTGRESDB_POOL_SIZE
-        value: "5"
-        
+      
       # ========== N8N SECURITY ==========
       - key: N8N_BASIC_AUTH_ACTIVE
         value: "true"
       - key: N8N_BASIC_AUTH_USER
         value: admin
       - key: N8N_BASIC_AUTH_PASSWORD
-        sync: false  # 🔴 CONFIGURAR MANUALMENTE
-      - key: GENERIC_TIMEZONE
-        value: America/Lima  # Ajusta tu timezone
-        
+        sync: false  # 🔴 Configurar manualmente
+      
       # ========== ENCRYPTION ==========
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
-        
+      
       # ========== WEBHOOK URL ==========
       - key: WEBHOOK_URL
         value: https://n8n-supabase.onrender.com
-        
+      
+      # ========== N8N CONFIG ==========
+      - key: N8N_PORT
+        value: $PORT
+      - key: N8N_PROTOCOL
+        value: https
+      - key: N8N_HOST
+        value: 0.0.0.0
+      
       # ========== PERFORMANCE ==========
-      - key: EXECUTIONS_PROCESS
-        value: main
-      - key: N8N_DIAGNOSTICS_ENABLED
-        value: "false"
       - key: N8N_LOG_LEVEL
         value: info
 
-    # Health check para Render
     healthCheckPath: /healthz
-    autoDeploy: true
