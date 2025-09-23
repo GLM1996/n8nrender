@@ -5,6 +5,7 @@ services:
     env: docker
     plan: free
     region: oregon
+    branch: main  # Especifica la rama
     docker:
       dockerfile: Dockerfile
     envVars:
@@ -12,29 +13,27 @@ services:
       - key: DB_TYPE
         value: postgresdb
       - key: DB_POSTGRESDB_HOST
-        value: db.cqdcwamhyfwibqcozjqh.supabase.co  # 🔴 AÑADÍ "db." al inicio
+        value: db.cqdcwamhyfwibqcozjqh.supabase.co
       - key: DB_POSTGRESDB_PORT
         value: "5432"
       - key: DB_POSTGRESDB_USER
-        value: postgres.cqdcwamhyfwibqcozjqh  # 🔴 CORREGIDO: solo el project-ref
+        value: postgres.cqdcwamhyfwibqcozjqh
       - key: DB_POSTGRESDB_PASSWORD
-        sync: false
+        sync: false  # 🔴 CONFIGURAR MANUALMENTE
       - key: DB_POSTGRESDB_DATABASE
         value: postgres
+      - key: DB_POSTGRESDB_SCHEMA
+        value: public
         
-      # ========== SSL CONFIGURATION ==========
+      # ========== SSL & CONNECTION ==========
       - key: DB_POSTGRESDB_SSL
         value: "true"
       - key: DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED
         value: "false"
-        
-      # ========== CONNECTION OPTIMIZATION ==========
       - key: DB_POSTGRESDB_CONNECTION_TIMEOUT
         value: "60000"
       - key: DB_POSTGRESDB_POOL_SIZE
-        value: "10"
-      - key: DB_POSTGRESDB_CONNECTION_TIMEOUT_MS
-        value: "60000"
+        value: "5"
         
       # ========== N8N SECURITY ==========
       - key: N8N_BASIC_AUTH_ACTIVE
@@ -42,7 +41,9 @@ services:
       - key: N8N_BASIC_AUTH_USER
         value: admin
       - key: N8N_BASIC_AUTH_PASSWORD
-        sync: false
+        sync: false  # 🔴 CONFIGURAR MANUALMENTE
+      - key: GENERIC_TIMEZONE
+        value: America/Lima  # Ajusta tu timezone
         
       # ========== ENCRYPTION ==========
       - key: N8N_ENCRYPTION_KEY
@@ -52,19 +53,13 @@ services:
       - key: WEBHOOK_URL
         value: https://n8n-supabase.onrender.com
         
-      # ========== N8N GENERAL CONFIG ==========
-      - key: N8N_PROTOCOL
-        value: https
-      - key: N8N_PORT
-        value: "5678"
-      - key: N8N_HOST
-        value: "0.0.0.0"  # 🔴 AÑADÍ comillas
-        
-      # ========== LOGGING ==========
-      - key: N8N_LOG_LEVEL
-        value: verbose
+      # ========== PERFORMANCE ==========
+      - key: EXECUTIONS_PROCESS
+        value: main
       - key: N8N_DIAGNOSTICS_ENABLED
-        value: "true"
+        value: "false"
+      - key: N8N_LOG_LEVEL
+        value: info
 
     # Health check para Render
     healthCheckPath: /healthz
