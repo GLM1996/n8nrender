@@ -6,7 +6,7 @@ services:
     plan: free
     region: oregon
     docker:
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     envVars:
       # ========== DATABASE CONFIGURATION (SUPABASE) ==========
       - key: DB_TYPE
