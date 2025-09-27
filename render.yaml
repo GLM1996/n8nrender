@@ -1,33 +1,42 @@
-# Use this Blueprint to deploy n8n on Render as a web
-# service that uses a Postgres database to store
-# workflow data.
-#
-# This Blueprint uses free instance types (specified by
-# `plan`) for both the web service and the database. You
-# can upgrade to paid instance types at any time to
-# increase resources.
-
 services:
   - type: web
     plan: free
-    # This is the runtime for services that pull a prebuilt Docker image
     runtime: image
-    # You can give the service any name
     name: n8n-service
     image:
-      # Pulls the n8n image tagged as latest from Docker Hub
       url: docker.io/n8nio/n8n:latest
-
-    # All environment variables defined below are required!
-    #
-    # You can define additional environment variables as needed.
-   
-
-    # The free instance type is limited to 1 GB of disk
-    # space.
-    #
-    # If you later upgrade to a paid instance type, you can
-    # increase the disk size to any multiple of 5 GB by
-    # setting the `diskSizeGB` property.
-    #
-    # diskSizeGB: 5
+    
+    envVars:
+      # Configuración de base de datos
+      - key: DB_TYPE
+        value: postgresdb
+      - key: DB_POSTGRESDB_DATABASE
+        value: test_n8n
+      - key: DB_POSTGRESDB_HOST
+        value: dpg-d3c7g7q4d50c73cb9csg-a  # ⚠️ REEMPLAZA ESTO con tu host real
+      - key: DB_POSTGRESDB_PORT
+        value: "5432"
+      - key: DB_POSTGRESDB_USER
+        value: n8n  # ⚠️ REEMPLAZA ESTO con tu usuario real
+      - key: DB_POSTGRESDB_PASSWORD
+        value: 65B2kGgHgyOv6Ze77GQKhuZZljrfcsii  # ⚠️ REEMPLAZA ESTO con tu contraseña real
+      
+      # Configuración general de n8n
+      - key: N8N_BASIC_AUTH_ACTIVE
+        value: "true"
+      - key: N8N_BASIC_AUTH_USER
+        value: admin
+      - key: N8N_BASIC_AUTH_PASSWORD
+        generateValue: true
+      
+      # Configuración de seguridad
+      - key: N8N_PROTOCOL
+        value: https
+      - key: N8N_SECURE_COOKIE
+        value: "true"
+      - key: WEBHOOK_URL
+        value: https://${RENDER_SERVICE_NAME}.onrender.com
+      
+      # Configuración de encryption key
+      - key: N8N_ENCRYPTION_KEY
+        generateValue: true
