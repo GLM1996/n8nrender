@@ -11,7 +11,7 @@ services:
       - key: DB_TYPE
         value: postgresdb
       - key: DB_POSTGRESDB_DATABASE
-        value: test_n8n
+        value: n8n_9ccw
       - key: DB_POSTGRESDB_HOST
         value: dpg-d3c7g7q4d50c73cb9csg-a  # ⚠️ REEMPLAZA ESTO con tu host real
       - key: DB_POSTGRESDB_PORT
