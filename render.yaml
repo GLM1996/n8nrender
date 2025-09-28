@@ -11,21 +11,21 @@ services:
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
 
-      # Configuración de base de datos EXISTENTE
+      # ✅ CONFIGURACIÓN SUPABASE CON TUS DATOS REALES
       - key: DB_TYPE
         value: postgresdb
       - key: DB_POSTGRESDB_DATABASE
-        value: n8n_9ccw
+        value: postgres
       - key: DB_POSTGRESDB_HOST
-        value: dpg-d3c7g7q4d50c73cb9csg-a.oregon-postgres.render.com
+        value: aws-1-eu-north-1.pooler.supabase.com
       - key: DB_POSTGRESDB_PORT
-        value: "5432"
+        value: "6543"  # ⚠️ Important: Tu puerto es 6543, no 5432
       - key: DB_POSTGRESDB_USER
-        value: n8n
+        value: postgres.cqdcwamhyfwibqcozjqh  # ⚠️ Usuario completo con namespace
       - key: DB_POSTGRESDB_PASSWORD
-        value: 65B2kGgHgyOv6Ze77GQKhuZZljrfcsii
+        value: SJ17lJUmpLMMkZB0  # ⚠️ Reemplaza con tu contraseña real
       
-      # 🔒 CONFIGURACIÓN SSL PARA POSTGRES (IMPORTANTE)
+      # Configuración SSL para Supabase
       - key: DB_POSTGRESDB_SSL
         value: "true"
       - key: DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED
@@ -33,24 +33,18 @@ services:
       - key: NODE_TLS_REJECT_UNAUTHORIZED
         value: "0"
       
-      # Configuración de seguridad n8n
+      # Configuración n8n
       - key: N8N_BASIC_AUTH_ACTIVE
         value: "true"
       - key: N8N_BASIC_AUTH_USER
         value: admin
       - key: N8N_BASIC_AUTH_PASSWORD
         generateValue: true
+      - key: N8N_PORT
+        value: "5678"
       - key: N8N_PROTOCOL
         value: https
       - key: N8N_SECURE_COOKIE
         value: "true"
       - key: WEBHOOK_URL
         value: https://${RENDER_SERVICE_NAME}.onrender.com
-      
-      # 🔒 Configuración de permisos del archivo (para eliminar el warning)
-      - key: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
-        value: "false"
-      
-      # 🚀 Configuración de puerto (importante para Render)
-      - key: N8N_PORT
-        value: "5678"
