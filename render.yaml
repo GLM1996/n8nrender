@@ -13,13 +13,13 @@ services:
       - key: DB_POSTGRESDB_DATABASE
         value: n8n_9ccw
       - key: DB_POSTGRESDB_HOST
-        value: dpg-d3c7g7q4d50c73cb9csg-a  # ⚠️ REEMPLAZA ESTO con tu host real
+        value: dpg-d3c7g7q4d50c73cb9csg-a.oregon-postgres.render.com
       - key: DB_POSTGRESDB_PORT
         value: "5432"
       - key: DB_POSTGRESDB_USER
-        value: n8n  # ⚠️ REEMPLAZA ESTO con tu usuario real
+        value: n8n
       - key: DB_POSTGRESDB_PASSWORD
-        value: 65B2kGgHgyOv6Ze77GQKhuZZljrfcsii  # ⚠️ REEMPLAZA ESTO con tu contraseña real
+        value: 65B2kGgHgyOv6Ze77GQKhuZZljrfcsii
       
       # Configuración general de n8n
       - key: N8N_BASIC_AUTH_ACTIVE
