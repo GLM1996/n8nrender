@@ -1,6 +1,3 @@
-# Use this Blueprint to deploy n8n on Render as a web
-# service that uses an EXISTING Postgres database
-
 services:
   - type: web
     plan: free
@@ -10,11 +7,11 @@ services:
       url: docker.io/n8nio/n8n:latest
 
     envVars:
-      # Encryption key (importante)
+      # Encryption key
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
 
-      # Configuración de base de datos EXISTENTE - USANDO VALORES DIRECTOS
+      # Configuración de base de datos EXISTENTE
       - key: DB_TYPE
         value: postgresdb
       - key: DB_POSTGRESDB_DATABASE
@@ -28,7 +25,15 @@ services:
       - key: DB_POSTGRESDB_PASSWORD
         value: 65B2kGgHgyOv6Ze77GQKhuZZljrfcsii
       
-      # Configuración de seguridad
+      # 🔒 CONFIGURACIÓN SSL PARA POSTGRES (IMPORTANTE)
+      - key: DB_POSTGRESDB_SSL
+        value: "true"
+      - key: DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED
+        value: "false"
+      - key: NODE_TLS_REJECT_UNAUTHORIZED
+        value: "0"
+      
+      # Configuración de seguridad n8n
       - key: N8N_BASIC_AUTH_ACTIVE
         value: "true"
       - key: N8N_BASIC_AUTH_USER
@@ -41,5 +46,11 @@ services:
         value: "true"
       - key: WEBHOOK_URL
         value: https://${RENDER_SERVICE_NAME}.onrender.com
-
-# ELIMINA la sección de databases ya que usas una existente
+      
+      # 🔒 Configuración de permisos del archivo (para eliminar el warning)
+      - key: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
+        value: "false"
+      
+      # 🚀 Configuración de puerto (importante para Render)
+      - key: N8N_PORT
+        value: "5678"
